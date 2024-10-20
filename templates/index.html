@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookRecSys - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">📚 BookRecSys</a>
+        <ul class="nav-links">
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="/recommend">Recommender</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Featured Books</h1>
+        <div class="book-grid">
+            {% for i in range(book_name|length) %}
+            <div class="book-card">
+                <img src="{{ image[i] }}" alt="{{ book_name[i] }}">
+                <div class="book-info">
+                    <h3 class="book-title">{{ book_name[i] }}</h3>
+                    <p class="book-author">by {{ author[i] }}</p>
+                    <div class="book-stats">
+                        <span>Rating: {{ rating[i] }}/5</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>About BookRecSys</h3>
+                <p>Your personalized book recommendation platform</p>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Email: support@bookrecsys.com</p>
+                <p>Phone: +1-800-123-4567</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookRecSys - Book Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">📚 BookRecSys</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recommend" class="active">Recommender</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="container my-4">
+        <h1 class="text-center mb-4">Find Your Next Favorite Book</h1>
+
+        <form action="/recommend_books" method="post" class="recommendation-form">
+            <div class="form-group">
+                <label for="book-search">Search for a book:</label>
+                <input name="user_input" type="text" id="book-search" class="form-control" placeholder="Enter book title">
+            </div>
+
+            <div class="filters-section mt-4">
+                <h3>Refine Your Recommendations</h3>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="min-rating">Minimum Rating:</label>
+                        <select name="min_rating" id="min-rating" class="form-control">
+                            <option value="">Any Rating</option>
+                            <option value="4">4+ Stars</option>
+                            <option value="3">3+ Stars</option>
+                            <option value="2">2+ Stars</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="year-range">Publication Year:</label>
+                        <div class="d-flex">
+                            <input type="number" name="year_from" placeholder="From Year" class="form-control mr-2" min="1800" max="2024">
+                            <input type="number" name="year_to" placeholder="To Year" class="form-control" min="1800" max="2024">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="author">Author:</label>
+                        <select name="author" id="author" class="form-control">
+                            <option value="">Any Author</option>
+                            {% for author in authors %}
+                                <option value="{{ author }}">{{ author }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="location">Location:</label>
+                        <select name="location" id="location" class="form-control">
+                            <option value="">Any Location</option>
+                            {% for location in locations %}
+                                <option value="{{ location }}">{{ location }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="age">Age:</label>
+                        <input type="number" name="age" id="age" class="form-control" placeholder="Enter your age">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Get Recommendations</button>
+            </div>
+        </form>
+
+        {% if data %}
+        <div class="book-grid">
+            {% for book in data %}
+            <div class="book-card">
+                <img src="{{ book[2] }}" alt="{{ book[0] }}" class="card-img-top">
+                <div class="book-info">
+                    <h3 class="book-title">{{ book[0] }}</h3>
+                    <p class="book-author">{{ book[1] }}</p>
+                    <p class="book-rating">Rating: {{ book[3] }}</p>
+                    <p class="book-year">Published: {{ book[4] }}</p>
+                    <p class="book-location">Location: {{ book[5] }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-danger mt-4">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
